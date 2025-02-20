@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>String Operations on Full Name</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h2>String Operations on Full Name</h2>
+        <div class="input-section">
+            <label for="fullName">Enter Full Name:</label>
+            <input type="text" id="fullName" placeholder="Enter your full name">
+            <button onclick="performOperations()">Process Name</button>
+        </div>
+
+        <div class="results-section">
+            <div class="result-group">
+                <label>String Length:</label>
+                <input type="text" id="stringLength" readonly>
+            </div>
+
+            <div class="result-group">
+                <label>First Index Value:</label>
+                <input type="text" id="firstIndex" readonly>
+            </div>
+
+            <div class="result-group">
+                <label>Last Index Value:</label>
+                <input type="text" id="lastIndex" readonly>
+            </div>
+
+            <div class="result-group">
+                <label>First Letter of Last Name:</label>
+                <input type="text" id="lastNameFirst" readonly>
+            </div>
+
+            <div class="result-group">
+                <label>First Name:</label>
+                <input type="text" id="firstName" readonly>
+            </div>
+
+            <div class="result-group">
+                <label>Middle Name:</label>
+                <input type="text" id="middleName" readonly>
+            </div>
+
+            <div class="result-group">
+                <label>Last Name:</label>
+                <input type="text" id="lastName" readonly>
+            </div>
+
+            <div class="result-group">
+                <label>Uppercase Name:</label>
+                <input type="text" id="upperName" readonly>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
