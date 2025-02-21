@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="index.js"></script>
+</head>
+
+<body>
+    <form name="myForm" class="ct-1" style="padding: 10px;">
+        <label for="fname" id="fname">First Name : </label>
+        <input type="text">
+        <br>
+        <label for="lname" id="lname">Last Name : </label>
+        <input type="text">
+        <br>    
+        <label for="pwd" id="pwd">Password : </label>
+        <input type="password" minlength="8" maxlength="20">
+        <br>
+        <form style="padding: 10px;">
+            <label for="gender" id="pwd">Gender : </label>
+            <input type="radio" name="question">
+            Male
+            </label>
+            <label>
+                <input type="radio" name="question">
+                Female
+            </label>
+            <label>
+                <input type="radio" name="question">
+                Aadi
+            </label>
+        </form>
+        <div class="org" style="padding: 10px;">
+            <label for="orgname">Organisation Name : </label>
+            <input type="text" name="org" id="org">
+        </div>
+        <div class="org" style="padding: 10px;">
+            <label for="orgname">Address : </label>
+            <textarea name="address" id="address"></textarea>
+        </div>
+        <div class="desig" style="padding: 10px;">
+            <label for="desig">Designation :</label>
+
+            <select name="desigdrop" id="desigdrop">
+                <option value="hod">HOD</option>
+                <option value="assoc">Associate Professor</option>
+                <option value="assis">Assistant Professor</option>
+                <option value="labassis">Lab Assistant</option>
+            </select>
+        </div>
+        <div class="updates" style="padding: 10px;"> 
+            <label for="getupdates">Do you wish to receive any updates : </label>
+                <input type="checkbox" name="question">
+                Newsletter
+                </label>
+                <label>
+                    <input type="checkbox" name="question">
+                    Magazines
+                </label>
+                <label>
+                    <input type="checkbox" name="question">
+                    Blogs
+                </label>
+                <label>
+                    <input type="checkbox" name="question">
+                    Others
+                </label>
+        </div>
+    </form>
+    <div class="btns" style="padding: 10px;">
+        <button type="submit" id="submit" onclick="submitForm()">Submit</button>
+        <button type="clr" id="clr">Clear</button>
+    </div>
+</body>
+
+</html>
