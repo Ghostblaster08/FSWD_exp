@@ -62,3 +62,8 @@ button:hover {
 div {
     margin-bottom: 20px;
 }
+.btns{
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
