@@ -6,11 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="style.css">
-    <script src="index.js"></script>
+    <script src="index.js" defer></script>
 </head>
 
 <body>
-    <form name="myForm" class="ct-1" style="padding: 10px;">
+    <form name="myForm" class="ct-1" style="padding: 10px;" onsubmit="return validateForm(event)">
         <label for="fname" id="fname">First Name : </label>
         <input type="text">
         <br>
@@ -18,7 +18,7 @@
         <input type="text">
         <br>    
         <label for="pwd" id="pwd">Password : </label>
-        <input type="password" minlength="8" maxlength="20">
+        <input type="password" id="password" minlength="8" maxlength="20">
         <br>
         <form style="padding: 10px;">
             <label for="gender" id="pwd">Gender : </label>
@@ -66,11 +66,11 @@
                     Others
                 </label>
         </div>
+        <div class="btns" style="padding: 10px;">
+            <button type="submit" id="submit">Submit</button>
+            <button type="button" id="clr" onclick="clearForm()">Clear</button>
+        </div>
     </form>
-    <div class="btns" style="padding: 10px;">
-        <button type="submit" id="submit" onclick="submitForm()">Submit</button>
-        <button type="clr" id="clr">Clear</button>
-    </div>
 </body>
 
 </html>
