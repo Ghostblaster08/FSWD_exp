@@ -1,0 +1,28 @@
+.app-container {
+    text-align: center;
+    font-family: Arial, sans-serif;
+  }
+  
+  .form-container {
+    margin-top: 20px;
+  }
+  
+  input {
+    margin: 5px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  button {
+    background-color: blue;
+    color: white;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: darkblue;
+  }
+  
