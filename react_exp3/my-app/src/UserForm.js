@@ -1,24 +1,33 @@
 import { useState } from "react";
 
 function UserForm() {
-  const [name, setName] = useState("");
+  const [first_name, setfirst_name] = useState("");
+  const [last_name, setlast_name] = useState("");
   const [submittedName, setSubmittedName] = useState(null);
 
-  const handleChange = (event) => {
-    setName(event.target.value);
+  const handleFNChange = (event) => {
+    setfirst_name(event.target.value);
+  };
+
+  const handleLNChange = (event) => {
+    setlast_name(event.target.value);
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    setSubmittedName(name);
+    setSubmittedName(first_name + " " + last_name);
   };
 
   return (
     <div className="form-container">
       <form onSubmit={handleSubmit}>
         <label>
-          Enter your name:
-          <input type="text" value={name} onChange={handleChange} />
+          Enter your First name:
+          <input type="text" value={first_name} onChange={handleFNChange} />
+        </label>
+        <label>
+          Enter your Last name:
+          <input type="text" value={last_name} onChange={handleLNChange} />
         </label>
         <button type="submit">Submit</button>
       </form>
