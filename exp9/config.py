@@ -1,0 +1,7 @@
+MONGO_URI = "mongodb://localhost:27017"
+MONGO_DB = "bookdb" 
+PG_HOST = "localhost"
+PG_DATABASE = "bookdb"
+PG_USER = "postgres"
+PG_PASSWORD = "Batman"
+PG_PORT = "5432"
