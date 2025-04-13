@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Driver = require('../models/Driver');
+const axios = require('axios'); // Add axios for API requests
 
 // Get all drivers
 router.get('/', async (req, res) => {
@@ -15,108 +16,94 @@ router.get('/', async (req, res) => {
 // Get driver standings
 router.get('/standings', async (req, res) => {
   try {
-    // Try to get actual data from database
-    // const standings = await Driver.find().sort({ 'seasonStats.points': -1 });
+    // Get current season and round (or specific ones if provided in query params)
+    const season = req.query.season || 'current';
+    const round = req.query.round || 'last';
     
-    // For development, use mock data with rich details
-    const mockStandings = [
-      {
-        driverId: '1',
-        fullName: 'Max Verstappen',
-        code: 'VER',
-        points: 308,
-        wins: 8,
-        team: { name: 'Red Bull Racing', color: '#0600EF' },
-        photoUrl: 'https://www.formula1.com/content/dam/fom-website/drivers/M/MAXVER01_Max_Verstappen/maxver01.png.transform/2col/image.png'
-      },
-      {
-        driverId: '16',
-        fullName: 'Charles Leclerc',
-        code: 'LEC',
-        points: 257,
-        wins: 3,
-        team: { name: 'Ferrari', color: '#DC0000' },
-        photoUrl: 'https://www.formula1.com/content/dam/fom-website/drivers/C/CHALEC01_Charles_Leclerc/chalec01.png.transform/2col/image.png'
-      },
-      {
-        driverId: '11',
-        fullName: 'Sergio Perez',
-        code: 'PER',
-        points: 201,
-        wins: 2,
-        team: { name: 'Red Bull Racing', color: '#0600EF' },
-        photoUrl: 'https://www.formula1.com/content/dam/fom-website/drivers/S/SERPER01_Sergio_Perez/serper01.png.transform/2col/image.png'
-      },
-      {
-        driverId: '63',
-        fullName: 'George Russell',
-        code: 'RUS',
-        points: 188,
-        wins: 1,
-        team: { name: 'Mercedes', color: '#00D2BE' },
-        photoUrl: 'https://www.formula1.com/content/dam/fom-website/drivers/G/GEORUS01_George_Russell/georus01.png.transform/2col/image.png'
-      },
-      {
-        driverId: '55',
-        fullName: 'Carlos Sainz',
-        code: 'SAI',
-        points: 175,
-        wins: 1,
-        team: { name: 'Ferrari', color: '#DC0000' },
-        photoUrl: 'https://www.formula1.com/content/dam/fom-website/drivers/C/CARSAI01_Carlos_Sainz/carsai01.png.transform/2col/image.png'
-      },
-      {
-        driverId: '44',
-        fullName: 'Lewis Hamilton',
-        code: 'HAM',
-        points: 164,
-        wins: 0,
-        team: { name: 'Mercedes', color: '#00D2BE' },
-        photoUrl: 'https://www.formula1.com/content/dam/fom-website/drivers/L/LEWHAM01_Lewis_Hamilton/lewham01.png.transform/2col/image.png'
-      },
-      {
-        driverId: '4',
-        fullName: 'Lando Norris',
-        code: 'NOR',
-        points: 115,
-        wins: 0,
-        team: { name: 'McLaren', color: '#FF8700' },
-        photoUrl: 'https://www.formula1.com/content/dam/fom-website/drivers/L/LANNOR01_Lando_Norris/lannor01.png.transform/2col/image.png'
-      },
-      {
-        driverId: '31',
-        fullName: 'Esteban Ocon',
-        code: 'OCO',
-        points: 65,
-        wins: 0,
-        team: { name: 'Alpine', color: '#0090FF' },
-        photoUrl: 'https://www.formula1.com/content/dam/fom-website/drivers/E/ESTOCO01_Esteban_Ocon/estoco01.png.transform/2col/image.png'
-      },
-      {
-        driverId: '14',
-        fullName: 'Fernando Alonso',
-        code: 'ALO',
-        points: 54,
-        wins: 0,
-        team: { name: 'Aston Martin', color: '#006F62' },
-        photoUrl: 'https://www.formula1.com/content/dam/fom-website/drivers/F/FERALO01_Fernando_Alonso/feralo01.png.transform/2col/image.png'
-      },
-      {
-        driverId: '77',
-        fullName: 'Valtteri Bottas',
-        code: 'BOT',
-        points: 47,
-        wins: 0,
-        team: { name: 'Alfa Romeo', color: '#900000' },
-        photoUrl: 'https://www.formula1.com/content/dam/fom-website/drivers/V/VALBOT01_Valtteri_Bottas/valbot01.png.transform/2col/image.png'
+    try {
+      // Fetch data from Ergast F1 API
+      const response = await axios.get(
+        `https://ergast.com/api/f1/${season}/${round}/driverStandings.json`
+      );
+      
+      // Check if we have valid data
+      if (response.data && 
+          response.data.MRData && 
+          response.data.MRData.StandingsTable && 
+          response.data.MRData.StandingsTable.StandingsLists && 
+          response.data.MRData.StandingsTable.StandingsLists.length > 0) {
+          
+        const standingsData = response.data.MRData.StandingsTable.StandingsLists[0];
+        const driverStandings = standingsData.DriverStandings.map(standing => {
+          const driver = standing.Driver;
+          const constructor = standing.Constructors[0];
+          
+          return {
+            driverId: driver.driverId,
+            fullName: `${driver.givenName} ${driver.familyName}`,
+            code: driver.code || driver.familyName.substring(0, 3).toUpperCase(),
+            points: parseInt(standing.points),
+            wins: parseInt(standing.wins),
+            team: { 
+              name: constructor.name, 
+              color: getTeamColor(constructor.constructorId)
+            },
+            photoUrl: `https://www.formula1.com/content/dam/fom-website/drivers/${driver.givenName[0]}/${driver.driverId.toUpperCase()}01_${driver.givenName}_${driver.familyName}/driver-profile-image.png.transform/2col/image.png`
+          };
+        });
+        
+        return res.json(driverStandings);
+      } else {
+        throw new Error('Invalid response format from Ergast API');
       }
-    ];
-    
-    res.json(mockStandings);
+    } catch (apiError) {
+      console.error('Error fetching data from Ergast API:', apiError.message);
+      
+      // Fall back to database as second option
+      const dbStandings = await Driver.find().sort({ 'seasonStats.points': -1 });
+      if (dbStandings && dbStandings.length > 0) {
+        const formattedStandings = dbStandings.map(driver => ({
+          driverId: driver.driverId,
+          fullName: driver.fullName,
+          code: driver.code,
+          points: driver.seasonStats.points,
+          wins: driver.seasonStats.wins,
+          team: driver.team,
+          photoUrl: driver.photoUrl
+        }));
+        
+        return res.json(formattedStandings);
+      }
+      
+      // If all else fails, throw the original error
+      throw apiError;
+    }
   } catch (error) {
-    res.status(500).json({ message: 'Error fetching driver standings', error: error.message });
+    console.error('Error fetching driver standings:', error.message);
+    res.status(500).json({ 
+      message: 'Error fetching driver standings', 
+      error: error.message 
+    });
   }
 });
+
+// Helper function to map constructor IDs to team colors
+function getTeamColor(constructorId) {
+  const teamColors = {
+    'red_bull': '#0600EF',
+    'ferrari': '#DC0000',
+    'mercedes': '#00D2BE',
+    'mclaren': '#FF8700',
+    'aston_martin': '#006F62',
+    'alpine': '#0090FF',
+    'alfa': '#900000',
+    'haas': '#FFFFFF',
+    'alphatauri': '#2B4562',
+    'williams': '#005AFF'
+  };
+  
+  return teamColors[constructorId] || '#333333'; // Default color
+}
 
 // Get a single driver by ID
 router.get('/:driverId', async (req, res) => {

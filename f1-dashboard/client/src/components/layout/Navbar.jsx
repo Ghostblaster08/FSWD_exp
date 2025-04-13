@@ -21,6 +21,7 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import LogoutIcon from '@mui/icons-material/Logout';
 import CompareIcon from '@mui/icons-material/Compare';
 import DashboardIcon from '@mui/icons-material/Dashboard';
+import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 import { AuthContext } from '../../context/AuthContext';
 
 const Navbar = ({ darkMode, toggleDarkMode }) => {
@@ -98,6 +99,21 @@ const Navbar = ({ darkMode, toggleDarkMode }) => {
             }}
           >
             Dashboard
+          </Button>
+          
+          <Button 
+            color="inherit" 
+            component={Link} 
+            to="/drivers" 
+            startIcon={<EmojiEventsIcon />}
+            sx={{ 
+              borderRadius: '8px', 
+              textTransform: 'none',
+              fontWeight: 500,
+              mx: 0.5
+            }}
+          >
+            Standings
           </Button>
           
           <Button 

@@ -9,6 +9,7 @@ import Navbar from './components/layout/Navbar';
 import Dashboard from './components/dashboard/Dashboard';
 import DriverComparison from './components/drivers/DriverComparison';
 import DriverDetail from './components/drivers/DriverDetail';
+import DriverStandings from './components/drivers/DriverStandings';
 import UserSettings from './components/user/UserSettings';
 import Login from './components/auth/Login';
 import Register from './components/auth/Register';
@@ -63,6 +64,7 @@ const App = () => {
           <Routes>
             <Route path="/" element={<Dashboard liveData={liveData} socket={socket} />} />
             <Route path="/compare" element={<DriverComparison />} />
+            <Route path="/drivers" element={<DriverStandings />} />
             <Route path="/driver/:driverId" element={<DriverDetail socket={socket} />} />
             <Route path="/settings" element={<UserSettings />} />
             <Route path="/login" element={<Login />} />
